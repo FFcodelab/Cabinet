@@ -1,0 +1,12 @@
+/build*/
+/.cache/
+/.venv/
+__pycache__/
+*.o
+*.a
+*.exe
+*.elf
+*.hex
+*.bin
+*.map
+*.zip

@@ -1,0 +1,21 @@
+name: Build and verify
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  host:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python tools/build.py --sanitize
+      - run: cmake -S . -B build-cmake -DCMAKE_BUILD_TYPE=Release
+      - run: cmake --build build-cmake --parallel
+      - run: ctest --test-dir build-cmake --output-on-failure
+      - uses: actions/upload-artifact@v4
+        with:
+          name: simulation-reports
+          path: |
+            build/*.json
